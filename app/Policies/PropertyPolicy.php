@@ -34,8 +34,8 @@ class PropertyPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Property $property): bool
+     public function delete(User $user, Property $property): bool
     {
-        return $user->id === $property->user_id;
+        return $user->id === $property->user_id && $property->is_available;
     }
 }

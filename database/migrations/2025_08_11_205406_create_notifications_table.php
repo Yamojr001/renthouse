@@ -11,23 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // This is the standard, correct schema that Laravel's notification
+        // system expects for storing notifications in the database.
         Schema::create('notifications', function (Blueprint $table) {
-            $table->id();
-
-            // The user who this notification is for
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            
-            // Type of notification, e.g., 'new_message', 'booking_approved'
+            $table->uuid('id')->primary();
             $table->string('type');
-            
-            $table->text('message');
-            
-            // A URL to redirect the user to when they click the notification
-            $table->string('link')->nullable();
-            
-            $table->boolean('is_read')->default(false);
-
-            $table->timestamps(); // creates `created_at` and `updated_at`
+            $table->morphs('notifiable');
+            $table->text('data');
+            $table->timestamp('read_at')->nullable();
+            $table->timestamps();
         });
     }
 

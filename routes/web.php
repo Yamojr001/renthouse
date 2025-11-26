@@ -1,12 +1,28 @@
 <?php
+// FILE: routes/web.php
+// This is the complete, definitive, and fully functional version of the web routes file.
 
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\PropertyController;
-use App\Http\Controllers\PropertyImageController; // <-- Make sure this is imported
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
+
+// --- IMPORT ALL CONTROLLERS ---
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PropertyController;
+use App\Http\Controllers\PropertyImageController;
+use App\Http\Controllers\BookingController;
+use App\Http\Controllers\BookingRequestController;
+use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\MessageController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\SearchController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Staff\StaffDashboardController;
+use App\Http\Controllers\Staff\LandlordController as StaffLandlordController;
+use App\Http\Controllers\DeletionRequestController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -14,57 +30,84 @@ use Illuminate\Http\Request;
 |--------------------------------------------------------------------------
 */
 
+// --- Public Welcome Route ---
 Route::get('/', function () {
-    return Inertia::render('Welcome', [ /* ... */ ]);
+    return Inertia::render('Welcome', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
 });
 
-Route::get('/dashboard', function (Request $request) {
-    // Get the authenticated user. This is guaranteed to exist because of the 'auth' middleware.
-    $user = $request->user();
-    $summaryData = [];
-
-    // Use a try-catch block for safety in case relationships are not defined yet
-    try {
+// --- Main Authenticated User Routes (for Tenants and Landlords) ---
+Route::middleware(['auth', 'verified'])->group(function () {
+    
+    // -- Main Dashboard (for Tenant and Landlord roles) --
+    Route::get('/dashboard', function (Request $request) {
+        $user = $request->user();
+        $summaryData = [];
         if ($user->role === 'landlord') {
             $summaryData['total_properties'] = $user->properties()->count();
             $summaryData['active_listings'] = $user->properties()->where('is_available', true)->count();
-            $summaryData['pending_requests'] = \App\Models\Booking::whereIn('property_id', $user->properties()->pluck('id'))
-                ->where('status', 'pending')
-                ->count();
-        } else { // Default to tenant view
+            $summaryData['pending_requests'] = \App\Models\Booking::whereIn('property_id', $user->properties()->pluck('id'))->where('status', 'pending')->count();
+        } else { // 'tenant' role
             $summaryData['booking_count'] = $user->bookings()->where('status', 'approved')->count();
             $summaryData['favorite_count'] = $user->favorites()->count();
         }
-    } catch (\Exception $e) {
-        error_log("Dashboard data fetching error: " . $e->getMessage());
-    }
+        return Inertia::render('Dashboard', ['summaryData' => $summaryData]);
+    })->name('dashboard');
 
-    // Simply render the Dashboard component and pass the user's data to it.
-    // The React component will decide what to show.
-    return Inertia::render('Dashboard', [
-        'summaryData' => $summaryData,
-    ]);
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-// --- Main middleware group for all authenticated users ---
-Route::middleware('auth')->group(function () {
-    // Profile routes
+    // -- User Profile Routes --
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // --- THIS IS THE CRITICAL FIX ---
-    // We are adding 'update' to the list of allowed actions.
+    // -- Properties (Main Resource Controller) --
     Route::resource('properties', PropertyController::class)
         ->only(['index', 'show', 'create', 'store', 'edit', 'update', 'destroy']);
 
-    // Landlord-specific route
-    Route::get('/my-properties', [PropertyController::class, 'myProperties'])
-         ->name('my-properties.index');
+    // -- Landlord-Specific Routes --
+    Route::get('/my-properties', [PropertyController::class, 'myProperties'])->name('my-properties.index');
+    Route::get('/booking-requests', [BookingRequestController::class, 'index'])->name('booking-requests.index');
+    Route::patch('/booking-requests/{booking}', [BookingRequestController::class, 'update'])->name('booking-requests.update');
+    Route::post('/properties/{property}/request-deletion', [DeletionRequestController::class, 'store'])
+         ->name('properties.request-deletion');
 
-    // Image deletion route
-    Route::delete('/property-images/{propertyImage}', [PropertyImageController::class, 'destroy'])
-         ->name('properties.images.destroy');
+    // -- Tenant-Specific Routes --
+    Route::get('/my-bookings', [BookingController::class, 'index'])->name('my-bookings.index');
+    Route::get('/bookings/{property}/create', [BookingController::class, 'create'])->name('bookings.create');
+    Route::post('/bookings/{property}', [BookingController::class, 'store'])->name('bookings.store');
+    Route::get('/my-favorites', [FavoriteController::class, 'index'])->name('my-favorites.index');
+    Route::get('/search', [SearchController::class, 'index'])->name('search.index');
+    
+    // -- Functionality Routes (used by multiple roles) --
+    Route::delete('/property-images/{propertyImage}', [PropertyImageController::class, 'destroy'])->name('properties.images.destroy');
+    Route::post('/favorites/{property}/toggle', [FavoriteController::class, 'toggle'])->name('favorites.toggle');
+    
+    // -- General Support & Messages Routes --
+    Route::get('/messages', [MessageController::class, 'index'])->name('messages.index');
+    Route::get('/contact-support', [ContactController::class, 'index'])->name('contact.index');
+    Route::post('/contact-support', [ContactController::class, 'store'])->name('contact.store');
 });
 
+// --- ADMIN-ONLY ROUTES ---
+// This group is protected by the 'admin' middleware.
+Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+    Route::resource('users', AdminUserController::class)->only(['index']);
+     Route::resource('users', AdminUserController::class)->only(['index']);
+    Route::get('/support-tickets', function() { return Inertia::render('Placeholder', ['pageName' => 'Support Tickets']); })->name('tickets.index');
+    Route::resource('users', AdminUserController::class)->only(['index', 'show']);
+});
+
+// --- STAFF-ONLY ROUTES ---
+// This group is protected by the 'staff' middleware.
+Route::middleware(['auth', 'verified', 'staff'])->prefix('staff')->name('staff.')->group(function () {
+    Route::get('/dashboard', [StaffDashboardController::class, 'index'])->name('dashboard');
+    Route::resource('landlords', StaffLandlordController::class)->only(['index', 'create', 'store']);
+    Route::resource('landlords', StaffLandlordController::class)->only(['index', 'create', 'store', 'show']);
+});
+
+// This file is included by Laravel Breeze for handling login, register, etc.
 require __DIR__.'/auth.php';

@@ -1,6 +1,8 @@
 <?php
+// FILE: database/seeders/DatabaseSeeder.php
+// Corrected Namespace
 
-namespace Database\Seeders;
+namespace Database\Seeders; // <-- THIS IS THE CORRECT NAMESPACE
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -12,11 +14,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        $this->call([
+            UserSeeder::class,
+            // You can add other seeders here later
+        ]);
     }
 }

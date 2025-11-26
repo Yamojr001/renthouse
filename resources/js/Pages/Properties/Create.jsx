@@ -1,5 +1,5 @@
 // FILE: resources/js/Pages/Properties/Create.jsx
-// Definitive, complete version with robust form structure.
+// This is the complete version with the new 'Possible Tenants' dropdown.
 
 import { useState } from 'react';
 import SidebarLayout from '@/Layouts/SidebarLayout';
@@ -22,6 +22,7 @@ export default function Create({ auth }) {
         price: '', price_period: 'month', bedrooms: '1', bathrooms: '1',
         country: '', state: '', city: '', address: '',
         amenities: [],
+        possible_tenants: 6, // <-- New form field with a default value
         images: [],
     });
     const [imagePreviews, setImagePreviews] = useState([]);
@@ -94,15 +95,40 @@ export default function Create({ auth }) {
                     </WizardStep>
 
                     <WizardStep currentStep={currentStep} stepNumber={3}>
-                        <h3 className="text-lg font-bold text-gray-800 mb-4">Price & Amenities</h3>
-                        <div className="grid grid-cols-2 gap-4">
-                            <div><InputLabel htmlFor="price" value="Price ($)" /><TextInput id="price" type="number" name="price" value={data.price} className="mt-1 block w-full" onChange={(e) => setData('price', e.target.value)} required /></div>
-                            <div><InputLabel htmlFor="price_period" value="Per" /><select id="price_period" name="price_period" value={data.price_period} className="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" onChange={(e) => setData('price_period', e.target.value)}><option value="month">Month</option><option value="year">Year</option></select></div>
+                        <h3 className="text-lg font-bold text-gray-800 mb-4">Price & Capacity</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <InputLabel htmlFor="price" value="Price ($)" />
+                                <TextInput id="price" type="number" name="price" value={data.price} className="mt-1 block w-full" onChange={(e) => setData('price', e.target.value)} required />
+                            </div>
+                            <div>
+                                <InputLabel htmlFor="price_period" value="Per" />
+                                <select id="price_period" name="price_period" value={data.price_period} className="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" onChange={(e) => setData('price_period', e.target.value)}><option value="month">Month</option><option value="year">Year</option></select>
+                            </div>
+                            
+                           <div className="md:col-span-2">
+                                <InputLabel htmlFor="accepted_tenants" value="Number of Tenants to Accept" />
+                                <TextInput
+                                    id="accepted_tenants"
+                                    type="number"
+                                    name="accepted_tenants"
+                                    value={data.accepted_tenants}
+                                    className="mt-1 block w-full"
+                                    onChange={(e) => setData('accepted_tenants', e.target.value)}
+                                    min="1"
+                                    required
+                                />
+                                <p className="text-xs text-gray-500 mt-1">
+                                    The system will add a small buffer to this number for booking requests. This is the exact number of tenants who will be allowed to pay.
+                                </p>
+                                <InputError message={errors.accepted_tenants} className="mt-2" />
+                            </div>
+
                         </div>
                         <hr className="my-6" />
                         <h4 className="text-md font-bold text-gray-700 mb-2">Amenities</h4>
                         <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-                            {['WiFi', 'Parking', 'Pool', 'Air Conditioning', 'Gym', 'Washing Machine'].map((amenity) => (
+                            {['WiFi', 'Parking', 'Pool', 'Air Conditioning', 'Gym'].map((amenity) => (
                                 <label key={amenity} className="flex items-center space-x-2"><input type="checkbox" value={amenity} checked={data.amenities.includes(amenity)} onChange={handleAmenityChange} className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" /><span className="text-sm text-gray-600">{amenity}</span></label>
                             ))}
                         </div>

@@ -1,11 +1,14 @@
 <?php
+// FILE: app/Models/Property.php
+// This version adds the missing 'user' relationship.
 
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsTo; // <-- Add this import
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Models\DeletionRequest;
 
 class Property extends Model
 {
@@ -13,7 +16,6 @@ class Property extends Model
 
     /**
      * The attributes that are mass assignable.
-     *
      * @var array<int, string>
      */
     protected $fillable = [
@@ -30,20 +32,42 @@ class Property extends Model
         'address',
         'amenities',
         'is_available',
-        // Note: We DO NOT add 'user_id' here. Laravel will handle it automatically
-        // through the relationship, which is more secure.
     ];
 
     /**
+     * -----------------------------------------------------------------
+     *  THIS IS THE MISSING METHOD TO ADD
+     * -----------------------------------------------------------------
      * Get the user (landlord) that owns the property.
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
-    
+
+    /**
+     * Get all images associated with the property.
+     */
     public function images(): HasMany
     {
         return $this->hasMany(PropertyImage::class);
     }
+
+    /**
+     * Get all bookings for the property.
+     */
+    public function bookings(): HasMany
+    {
+        return $this->hasMany(Booking::class);
+    }
+
+     public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class);
+    }
+     public function deletionRequests(): HasMany
+    {
+        return $this->hasMany(DeletionRequest::class);
+    }
+    
 }

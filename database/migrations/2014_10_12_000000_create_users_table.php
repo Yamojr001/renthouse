@@ -15,7 +15,7 @@ public function up(): void
         $table->string('email')->unique();
         $table->timestamp('email_verified_at')->nullable();
         $table->string('password');
-        $table->string('role')->default('tenant'); // <-- CORRECT WAY TO ADD THE COLUMN HERE
+        $table->string('role')->default('tenant');
         $table->rememberToken();
         $table->timestamps();
     });

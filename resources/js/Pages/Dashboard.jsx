@@ -2,7 +2,7 @@
 // This is the complete, final, and corrected version.
 
 import { Head } from '@inertiajs/react';
-import SidebarLayout from '@/Layouts/SidebarLayout'; // Ensure this layout is used
+import SidebarLayout from '@/Layouts/SidebarLayout';
 import { FaHome, FaCheckCircle, FaClock, FaCalendarAlt, FaHeart } from 'react-icons/fa';
 
 // Reusable component for the summary cards
