@@ -5,7 +5,7 @@ import { Link } from '@inertiajs/react';
 import { FaTachometerAlt, FaUsers, FaArrowLeft } from 'react-icons/fa';
 
 const StaffSidebarNavLink = ({ href, active, children }) => (
-    <Link href={href} className={`flex items-center p-3 text-base font-normal rounded-lg transition duration-75 group ${active ? 'bg-gray-700 text-white' : 'text-gray-400 hover:bg-gray-700 hover:text-white'}`}>
+    <Link href={href} className={`flex items-center p-3 text-base font-normal rounded-lg transition duration-75 group ${active ? 'bg-orange-400 text-white' : 'text-white hover:bg-orange-700 hover:text-white'}`}>
         {children}
     </Link>
 );
@@ -13,8 +13,8 @@ const StaffSidebarNavLink = ({ href, active, children }) => (
 export default function StaffLayout({ user, header, children }) {
     return (
         <div className="min-h-screen bg-gray-100 flex">
-            <aside className="w-64 bg-gray-800 text-white flex-shrink-0 md:flex flex-col hidden">
-                <div className="flex items-center justify-center h-16 border-b border-gray-700">
+            <aside className="w-64 bg-orange-600 text-white flex-shrink-0 md:flex flex-col hidden">
+                <div className="flex items-center justify-center h-16 border-b border-white">
                     <Link href={route('staff.dashboard')} className="text-2xl font-bold">Staff Panel</Link>
                 </div>
                 <nav className="px-4 py-4 space-y-2 flex-grow">
@@ -28,7 +28,7 @@ export default function StaffLayout({ user, header, children }) {
                         <FaUsers className="mr-3" /> My Landlords
                     </StaffSidebarNavLink> */}
                 </nav>
-                <div className="px-4 py-4 border-t border-gray-700">
+                <div className="px-4 py-4 border-t border-white">
                      <StaffSidebarNavLink href={route('dashboard')}>
                         <FaArrowLeft className="mr-3" /> Back to Main Site
                     </StaffSidebarNavLink>

@@ -41,7 +41,7 @@ export default function Login({ status, canResetPassword }) {
                         type="email"
                         name="email"
                         value={data.email}
-                        className="mt-1 block w-full"
+                        className="mt-1  block w-full"
                         autoComplete="username"
                         isFocused={true}
                         onChange={(e) => setData('email', e.target.value)}
@@ -80,10 +80,10 @@ export default function Login({ status, canResetPassword }) {
                 <div className="flex items-center justify-end mt-4">
                     {canResetPassword && (
                         <Link
-                            href={route('password.request')}
-                            className="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                            href={route('register')}
+                            className="underline text-sm text-orange-600 hover:text-gray-900 rounded-md "
                         >
-                            Forgot your password?
+                            Don't have an account?
                         </Link>
                     )}
 
@@ -91,6 +91,12 @@ export default function Login({ status, canResetPassword }) {
                         Log in
                     </PrimaryButton>
                 </div>
+                                        <Link
+                            href={route('password.request')}
+                            className="underline text-sm ml-14 mt-2 text-gray-600 hover:text-gray-900 rounded-md "
+                        >
+                            Forgot your password?
+                        </Link>
             </form>
         </GuestLayout>
     );

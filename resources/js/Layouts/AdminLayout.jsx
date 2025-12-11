@@ -4,13 +4,13 @@
 import { Link } from '@inertiajs/react';
 import { FaTachometerAlt, FaUsers, FaArrowLeft, FaTicketAlt } from 'react-icons/fa'; // <-- Added FaUsers and FaTicketAlt
 
-const AdminSidebarNavLink = ({ href, active, children }) => ( <Link href={href} className={`flex items-center p-3 text-base font-normal rounded-lg transition duration-75 group ${active ? 'bg-gray-700 text-white' : 'text-gray-400 hover:bg-gray-700 hover:text-white'}`}>{children}</Link> );
+const AdminSidebarNavLink = ({ href, active, children }) => ( <Link href={href} className={`flex items-center p-3 text-base font-normal rounded-lg transition duration-75 group ${active ? 'bg-orange-400 text-white' : 'text-white hover:bg-orange-700 hover:text-white'}`}>{children}</Link> );
 
 export default function AdminLayout({ user, header, children }) {
     return (
         <div className="min-h-screen bg-gray-100 flex">
-            <aside className="w-64 bg-gray-800 text-white flex-shrink-0 md:flex flex-col hidden">
-                <div className="flex items-center justify-center h-16 border-b border-gray-700">
+            <aside className="w-64 bg-orange-600 text-white flex-shrink-0 md:flex flex-col hidden">
+                <div className="flex items-center justify-center h-16 border-b border-white">
                     <Link href={route('admin.dashboard')} className="text-2xl font-bold">Admin Panel</Link>
                 </div>
                 <nav className="px-4 py-4 space-y-2 flex-grow">
@@ -27,7 +27,7 @@ export default function AdminLayout({ user, header, children }) {
                         <FaTicketAlt className="mr-3" /> Support Tickets
                     </AdminSidebarNavLink>
                 </nav>
-                <div className="px-4 py-4 border-t border-gray-700">
+                <div className="px-4 py-4 border-t border-white">
                      <AdminSidebarNavLink href={route('dashboard')}>
                         <FaArrowLeft className="mr-3" /> Back to Main Site
                     </AdminSidebarNavLink>

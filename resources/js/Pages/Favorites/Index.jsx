@@ -33,7 +33,7 @@ export default function Index({ auth, properties }) {
                     </p>
                     <Link 
                         href={route('properties.index')} 
-                        className="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-500"
+                        className="inline-flex items-center px-4 py-2 bg-orange-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-orange-600"
                     >
                         Browse Properties
                     </Link>

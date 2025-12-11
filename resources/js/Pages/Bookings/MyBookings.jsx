@@ -111,7 +111,7 @@ export default function MyBookings({ auth, bookings }) {
                 <div className="text-center bg-white p-12 rounded-lg shadow-sm">
                     <h3 className="text-xl font-bold text-gray-700">You have no bookings yet.</h3>
                     <p className="text-gray-500 mt-2 mb-4">When you request to rent a property, its status will appear here.</p>
-                    <Link href={route('properties.index')} className="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-500">
+                    <Link href={route('properties.index')} className="inline-flex items-center px-4 py-2 bg-orange-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-orange-600">
                         Browse Properties
                     </Link>
                 </div>

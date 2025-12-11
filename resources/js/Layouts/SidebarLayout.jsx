@@ -14,7 +14,7 @@ const SidebarNavLink = ({ href, active, children }) => (
     <Link
         href={href}
         className={`flex items-center p-4 text-base font-normal rounded-lg transition duration-75 group ${
-            active ? 'bg-gray-700 text-white' : 'text-gray-400 hover:bg-gray-700 hover:text-white'
+            active ? 'bg-orange-400 text-white' : 'text-white hover:bg-orange-700 hover:text-white'
         }`}
     >
         {children}
@@ -27,8 +27,8 @@ export default function SidebarLayout({ user, header, children }) {
     return (
         <div className="min-h-screen bg-gray-100 flex">
             {/* --- Off-canvas Sidebar --- */}
-            <aside className={`fixed inset-y-0 left-0 z-30 w-64 bg-gray-800 text-white transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out md:translate-x-0 md:relative`}>
-                <div className="flex items-center justify-center h-16 border-b border-gray-700">
+            <aside className={`fixed inset-y-0 left-0 z-30 w-64 bg-orange-600 text-white transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out md:translate-x-0 md:relative`}>
+                <div className="flex items-center justify-center h-16 border-b border-white">
                     <Link href={route('dashboard')} className="text-2xl font-bold text-white">RentHouse</Link>
                 </div>
                 <nav className="flex-1 px-4 py-4 space-y-2 overflow-y-auto">
@@ -73,8 +73,8 @@ export default function SidebarLayout({ user, header, children }) {
                     {/* --- Admin-Only Section --- */}
                     {user.role === 'admin' && (
                         <>
-                            <hr className="my-2 border-gray-600" />
-                            <div className="px-4 pt-2 pb-1 text-xs font-semibold text-gray-400 uppercase">Admin Area</div>
+                            <hr className="my-2 border-white" />
+                            <div className="px-4 pt-2 pb-1 text-xs font-semibold text-white uppercase">Admin Area</div>
                             <SidebarNavLink href={route('admin.users.index')} active={route().current('admin.users.index')}>
                                 <FaUsers className="mr-3" /> Manage Users
                             </SidebarNavLink>
@@ -87,15 +87,15 @@ export default function SidebarLayout({ user, header, children }) {
                     {/* --- Staff & Admin Section --- */}
                     {(user.role === 'staff' || user.role === 'admin') && (
                         <>
-                            <hr className="my-2 border-gray-600" />
-                            <div className="px-4 pt-2 pb-1 text-xs font-semibold text-gray-400 uppercase">Staff Area</div>
+                            <hr className="my-2 border-white" />
+                            <div className="px-4 pt-2 pb-1 text-xs font-semibold text-white uppercase">Staff Area</div>
                             <SidebarNavLink href={route('staff.dashboard')} active={route().current('staff.dashboard')}>
                                 <FaUserShield className="mr-3" /> Staff Panel
                             </SidebarNavLink>
                         </>
                     )}
 
-                    <hr className="my-2 border-gray-600" />
+                    <hr className="my-2 border-white" />
                     
                     {/* --- Links for All Logged-in Roles --- */}
                     <SidebarNavLink href={route('messages.index')} active={route().current('messages.index')}>
@@ -107,7 +107,7 @@ export default function SidebarLayout({ user, header, children }) {
                     <SidebarNavLink href={route('profile.edit')} active={route().current('profile.edit')}>
                         <FaUserCog className="mr-3" /> Profile Settings
                     </SidebarNavLink>
-                    <Link href={route('logout')} method="post" as="button" className="w-full text-left flex items-center p-4 text-base font-normal text-gray-400 rounded-lg hover:bg-gray-700 hover:text-white group">
+                    <Link href={route('logout')} method="post" as="button" className="w-full text-left flex items-center p-4 text-base font-normal text-white rounded-lg hover:bg-orange-700 hover:text-white group">
                          <FaSignOutAlt className="mr-3" /> Logout
                     </Link>
                 </nav>
