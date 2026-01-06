@@ -8,6 +8,7 @@ import {
     FaBuilding, FaUserCog, FaSignOutAlt, FaCalendarAlt, FaHeart,
     FaSearch, FaEnvelope, FaHeadset, FaTicketAlt, FaUserShield, FaUsers 
 } from 'react-icons/fa';
+import Logo from '../../images/Logo2.png';
 
 // This is a reusable NavLink component for our sidebar.
 const SidebarNavLink = ({ href, active, children }) => (
@@ -29,7 +30,8 @@ export default function SidebarLayout({ user, header, children }) {
             {/* --- Off-canvas Sidebar --- */}
             <aside className={`fixed inset-y-0 left-0 z-30 w-64 bg-orange-600 text-white transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out md:translate-x-0 md:relative`}>
                 <div className="flex items-center justify-center h-16 border-b border-white">
-                    <Link href={route('dashboard')} className="text-2xl font-bold text-white">RentHouse</Link>
+                    <img src={Logo} alt="RentHouse Logo" className="h-12 w-20 " />
+                    <Link href={route('dashboard')} className="text-3xl font-bold text-white ml-[-20px]">RentHouse</Link>
                 </div>
                 <nav className="flex-1 px-4 py-4 space-y-2 overflow-y-auto">
                     {/* --- General Links --- */}
