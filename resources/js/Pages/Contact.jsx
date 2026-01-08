@@ -1,131 +1,150 @@
-import { Link, Head } from '@inertiajs/react';
-import { motion } from 'framer-motion';
+import React from 'react';
+import { motion } from 'framer-motion'; 
+import { Mail, Phone, MapPin } from 'lucide-react'; 
+import Footer from '@/Components/Footer';
+import Logo from '../../images/Logo.png';
 
-export default function Contact({ auth }) {
-    const containerVariants = {
-        hidden: { opacity: 0 },
-        visible: {
-            opacity: 1,
-            transition: {
-                staggerChildren: 0.2
-            }
-        }
-    };
+const brandOrange = 'bg-[#FF4500]'; 
 
-    const itemVariants = {
-        hidden: { opacity: 0, y: 20 },
-        visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
-    };
-
+const ContactUsPage = () => {
+  // Animation variant for the main content to fade in
+  const mainVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8 } }
+  };
+    
     return (
-        <>
-            <Head title="Renthouse - Find Rentals in Dutse" />
+    <>
+    <section className="min-h-screen bg-gray-50 py-24 md:py-32 font-jakartaSans " id='contact'>
+        <div className="max-w-7xl mx-auto px-6">
+        {/* Logo */}
+        <div className="flex justify-center mt-[-50px] mb-7 items-center space-x-[-20px]">
+          <img src={Logo} alt="RentHouse Logo" className="h-12 w-20 relative ml-[-30px] " />
+          <span className="text-[#222222] text-3xl font-extrabold tracking-tighter">
+            RentHouse
+          </span>
+        </div>
+       
+                
 
-            {/* Main Background Wrapper */}
-            <div className="min-h-screen bg-gray-50 text-gray-900 selection:bg-orange-500 selection:text-white">
+        {/* Header - Animated Entrance */}
+        <div className="text-center mb-12 md:mb-16">
+          <motion.h1 
+            initial="hidden"
+            animate="visible"
+            variants={mainVariants}
+            className="text-5xl md:text-5xl lg:text-5xl font-extrabold text-gray-900 mb-4 "
+          >
+            Contact Us
+          </motion.h1>
+          
+            <div className="flex justify-center mb-6">
+            <motion.div 
+            initial={{ width: 0 }}
+            whileInView={{ width: '100px' }} // Expands to 100px wide
+            viewport={{ once: true, amount: 0.8 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="h-1 bg-orange-500 rounded-full" 
+            style={{ maxWidth: '200px' }} // Ensures it doesn't expand past this width if motion fails
+            ></motion.div>
+            </div>
+                             
 
-                {/* Navbar */}
-                <nav className="w-full max-w-7xl mx-auto px-6 py-6 flex justify-between items-center">
-                    {/* Logo Area */}
-                    <div className="flex items-center gap-2">
-                        <span className="text-3xl font-bold tracking-tight text-orange-600">Renthouse</span>
-                    </div>
+                  
+          <motion.p 
+            initial="hidden"
+            animate="visible"
+            variants={{...mainVariants, transition: { delay: 0.2, duration: 0.8 }}}
+            className="text-gray-400 text-lg md:text-xl max-w-3xl mx-auto"
+          >
+            We're here to help you manage your rentals easier than ever. Send us a message or find our office location below.
+          </motion.p>
+        </div>
 
-                    {/* Auth Navigation */}
-                    <div className="flex items-center gap-4">
-                        {auth.user ? (
-                            <Link
-                                href={route('dashboard')}
-                                className="font-semibold text-gray-600 hover:text-orange-600 transition"
-                            >
-                                Dashboard
-                            </Link>
-                        ) : (
-                            <>
-                                <Link
-                                    href={route('login')}
-                                    className="font-bold text-gray-600 hover:text-orange-600 text-[18px] transition"
-                                >
-                                    Log in
-                                </Link>
-                                <Link
-                                    href={route('register')}
-                                    className=" sm:inline-block px-4 py-2 bg-orange-500 text-white rounded-full font-medium hover:bg-gray-800 transition"
-                                >
-                                    Sign up 
-                                </Link>
-                            </>
-                        )}
-                    </div>
-                </nav>
 
-                {/* Hero Section */}
-                <main className="flex flex-col items-center justify-center text-center px-6 mt-16 sm:mt-24 max-w-4xl mx-auto">
+        <div className="flex flex-col lg:flex-row gap-12 lg:gap-8 bg-white rounded-2xl shadow-2xl p-6 md:p-12">
+            
+            {/* 1. Contact Form (Left Side) */}
+            <div className="w-full lg:w-7/12">
+                <h2 className="text-3xl font-bold text-black mb-6">Send Us a Message</h2>
+                <form className="space-y-6">
                     
-                    <motion.div
-                        variants={containerVariants}
-                        initial="hidden"
-                        animate="visible"
+                    {/* Input Field Group */}
+                    <input 
+                        type="text" 
+                        placeholder="Your Full Name"
+                        className="w-full p-4 border border-gray-300 rounded-lg focus:ring-4 focus:ring-orange-200 focus:border-orange-500 outline-none transition duration-300"
+                    />
+                    <input 
+                        type="email" 
+                        placeholder="Your Email Address"
+                        className="w-full p-4 border border-gray-300 rounded-lg focus:ring-4 focus:ring-orange-200 focus:border-orange-500 outline-none transition duration-300"
+                    />
+                    <input 
+                        type="text" 
+                        placeholder="Subject"
+                        className="w-full p-4 border border-gray-300 rounded-lg focus:ring-4 focus:ring-orange-200 focus:border-orange-500 outline-none transition duration-300"
+                    />
+                    <textarea 
+                        placeholder="Your Message"
+                        rows="5"
+                        className="w-full p-4 border border-gray-300 rounded-lg focus:ring-4 focus:ring-orange-200 focus:border-orange-500 outline-none transition duration-300"
+                    ></textarea>
+                    
+                    {/* Submit Button */}
+                    <button
+                        type="submit"
+                        className={`w-full px-8 py-4 rounded-xl ${brandOrange} text-white font-bold text-lg shadow-lg hover:bg-[#FF6A1F] transition duration-300 transform hover:scale-[1.01]`}
                     >
-                        {/* Badge / Tagline */}
-                        <motion.div variants={itemVariants} className="mb-6">
-                            <span className="px-3 py-1 rounded-full bg-orange-100 text-orange-700 text-sm font-medium">
-                                #1 Property Listing in Dutse
-                            </span>
-                        </motion.div>
+                        Submit Message
+                    </button>
+                </form>
+            </div>
 
-                        {/* Main Headline */}
-                        <motion.h1 
-                            variants={itemVariants} 
-                            className="md:text-6xl sm:text-4xl text-4xl lg:text-7xl font-extrabold tracking-tight text-gray-900 mb-6 leading-tight"
-                        >
-                            We make managing your rentals <span className="text-orange-600">easier than ever.</span>
-                        </motion.h1>
+            {/* 2. Contact Information & Map (Right Side) */}
+            <div className="w-full lg:w-5/12 space-y-8 bg-gray-50 p-6 rounded-xl">
+                <h2 className="text-3xl font-bold text-black mb-4">Contact Details</h2>
 
-                        {/* Subtext Paragraph */}
-                        <motion.p 
-                            variants={itemVariants} 
-                            className="text-lg sm:text-xl lg:text-2xl text-gray-600 mb-10 max-w-2xl mx-auto leading-relaxed"
-                        >
-                            Find Houses, Shops, and Hotels for Rent in Dutse — Fast & Easy.
-                            Your one-stop platform for discovering reliable rentals across Dutse.
-                            Search verified listings from trusted property owners and agents, all in one place.
-                        </motion.p>
+                {/* Info Items */}
+                <div className="space-y-5">
+                    <div className="flex items-start">
+                        <MapPin size={24} className="text-orange-500 mr-4 mt-1 flex-shrink-0" />
+                        <div>
+                            <p className="text-gray-800 font-semibold">Our Office</p>
+                            <p className="text-gray-600">NO. 97 Nasriyya Plaza, Startup Jigawa, Dutse Jigawa State, Nigeria</p>
+                        </div>
+                    </div>
+                    
+                    <div className="flex items-start">
+                        <Phone size={24} className="text-orange-500 mr-4 mt-1 flex-shrink-0" />
+                        <div>
+                            <p className="text-gray-800 font-semibold">Call Us</p>
+                            <p className="text-gray-600">(+234) 903-2266-149</p>
+                        </div>
+                    </div>
+                    
+                    <div className="flex items-start">
+                        <Mail size={24} className="text-orange-500 mr-4 mt-1 flex-shrink-0" />
+                        <div>
+                            <p className="text-gray-800 font-semibold">Email Us</p>
+                            <p className="text-gray-600 hover:text-orange-500 transition duration-300 cursor-pointer">startupjigawaltd@gmail.com</p>
+                        </div>
+                    </div>
+                </div>
 
-                        {/* CTA Buttons */}
-                        <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4 justify-center">
-                            {auth.user ? (
-                                <Link
-                                    href={route('dashboard')}
-                                    className="px-8 py-4 bg-orange-600 text-white rounded-xl font-bold text-lg hover:bg-orange-700 transition shadow-lg shadow-orange-500/30"
-                                >
-                                    Go to Dashboard
-                                </Link>
-                            ) : (
-                                <Link
-                                    href={route('register')}
-                                    className="px-8 py-4 bg-orange-500 text-white rounded-xl mb-8 font-bold text-lg hover:bg-orange-600 transition shadow-lg shadow-orange-500/30"
-                                >
-                                    Get Started
-                                </Link>
-                            )}
-                                                            <Link
-                                    href={route('register')}
-                                    className="px-8 py-4 bg-gray-50 border border-gray-300 text-orange-600 rounded-xl mb-8 font-bold text-lg hover:bg-orange-200 transition"
-                                >
-                                    Register as a Landord
-                                </Link>
-                        </motion.div>
-                    </motion.div>
-
-                </main>
-
-                {/* Decorative background element (Optional subtle blur) */}
-                <div className="fixed top-0 left-0 -z-10 w-full h-full bg-white">
-                    <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-orange-200/30 rounded-full blur-[100px]" />
-                    <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-200/20 rounded-full blur-[100px]" />
+                {/* Map Placeholder */}
+                <div className="h-48 bg-gray-300 rounded-lg flex items-center justify-center overflow-hidden">
+                    <MapPin size={50} className="text-gray-500 opacity-50" />
+                    <span className="absolute text-sm text-gray-700 font-medium">Jigawa State, Nigeria</span>
                 </div>
             </div>
-        </>
-    );
-}
+
+        </div>
+      </div>
+    </section>
+    <Footer />
+    </>
+  );
+};
+
+export default ContactUsPage;

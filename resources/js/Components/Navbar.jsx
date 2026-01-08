@@ -8,7 +8,7 @@ const navItems = [
   { name: 'Features', href: '#features', id: 'features' },
   { name: 'About', href: '#about', id: 'about' },
   { name: 'Properties', href: '#properties', id: 'properties' },
-  { name: 'Contact Us', href: '#contact', id: 'contact' },
+  { name: 'Contact Us', href: 'contact', id: 'contact' },
 ];
 
 const brandOrange = 'bg-[#FF4500]';

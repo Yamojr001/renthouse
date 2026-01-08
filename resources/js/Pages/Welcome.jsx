@@ -95,7 +95,7 @@ export default function Welcome({ auth }) {
                     </Link>
                 )}
                     <Link
-                        href={route('register')}
+                        href={route('contact')}
                         className="px-8 py-4 bg-gray-50 border border-gray-300 text-orange-600 rounded-xl mb-8 font-bold text-lg hover:bg-orange-200 transition"
                     >
                         Register as a Landord
