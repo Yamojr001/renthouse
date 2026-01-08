@@ -6,8 +6,6 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
-
-// --- IMPORT ALL CONTROLLERS ---
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\PropertyImageController;
@@ -39,7 +37,9 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
-
+Route::get('/contact', function () {
+    return Inertia::render('Contact');
+})->name('contact');
 // --- Main Authenticated User Routes (for Tenants and Landlords) ---
 Route::middleware(['auth', 'verified'])->group(function () {
     

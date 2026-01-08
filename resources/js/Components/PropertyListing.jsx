@@ -1,5 +1,5 @@
 import React from 'react';
-import PropertyCard from '../components/PropertyCard2';   
+import PropertyCard from './PropertyCard2';   
 import { motion } from 'framer-motion';
 import image1 from '../../images/propty3.jpeg'
 import image2 from '../../images/propty4.jpeg'
