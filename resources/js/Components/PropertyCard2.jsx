@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion'; 
-import { Heart, MapPin, Bed, Bath, Maximize } from 'lucide-react'; 
+import { Heart, MapPin } from 'lucide-react'; 
 
 
 const brandOrange = 'bg-[#FF4500]'; 
@@ -41,9 +41,9 @@ const PropertyCard = ({ property }) => {
                     <h3 className="text-xl font-bold text-gray-900 leading-tight group-hover:text-orange-600 transition duration-300">
                         {property.name}
                     </h3>
-                    <span className="text-2xl font-extrabold text-black ml-4">
+                    {/* <span className="text-2xl font-extrabold text-black ml-4">
                         N{property.price}
-                    </span>
+                    </span> */}
                 </div>
 
                 <p className="text-gray-500 flex items-center mb-4">

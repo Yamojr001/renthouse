@@ -66,7 +66,7 @@ const ContactUsPage = () => {
             
             {/* 1. Contact Form (Left Side) */}
             <div className="w-full lg:w-7/12">
-                <h2 className="text-3xl font-bold text-black mb-6">Send Us a Message</h2>
+                <h2 className="text-3xl font-bold text-black mb-6">Register as a Landlord</h2>
                 <form className="space-y-6">
                     
                     {/* Input Field Group */}
@@ -81,15 +81,15 @@ const ContactUsPage = () => {
                         className="w-full p-4 border border-gray-300 rounded-lg focus:ring-4 focus:ring-orange-200 focus:border-orange-500 outline-none transition duration-300"
                     />
                     <input 
-                        type="text" 
-                        placeholder="Subject"
+                        type="tel" 
+                        placeholder="Phone Number"
                         className="w-full p-4 border border-gray-300 rounded-lg focus:ring-4 focus:ring-orange-200 focus:border-orange-500 outline-none transition duration-300"
                     />
-                    <textarea 
-                        placeholder="Your Message"
-                        rows="5"
+                    <input 
+                        type="text"
+                        placeholder="Address"
                         className="w-full p-4 border border-gray-300 rounded-lg focus:ring-4 focus:ring-orange-200 focus:border-orange-500 outline-none transition duration-300"
-                    ></textarea>
+                    />
                     
                     {/* Submit Button */}
                     <button
@@ -133,7 +133,7 @@ const ContactUsPage = () => {
                 </div>
 
                 {/* Map Placeholder */}
-                <div className="h-48 bg-gray-300 rounded-lg flex items-center justify-center overflow-hidden">
+                <div className="h-40 bg-gray-300 rounded-lg flex items-center justify-center overflow-hidden">
                     <MapPin size={50} className="text-gray-500 opacity-50" />
                     <span className="absolute text-sm text-gray-700 font-medium">Jigawa State, Nigeria</span>
                 </div>
