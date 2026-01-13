@@ -1,10 +1,8 @@
 <?php
-// FILE: app/Models/User.php
-// This is the complete and final version with all relationships and fillable fields.
+// app/Models/User.php
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -29,7 +27,17 @@ class User extends Authenticatable
         'staff_id',
         'phone',
         'nin',
+        'dob',
+        'nationality',
+        'address_street',
+        'address_city',
+        'address_state',
+        'address_country',
+        'id_type',
+        'id_number',
+        'id_document_path', // Add this
     ];
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -92,8 +100,32 @@ class User extends Authenticatable
     {
         return $this->hasMany(SupportTicket::class);
     }
+
     public function staff(): BelongsTo
     {
-    return $this->belongsTo(User::class, 'staff_id');
+        return $this->belongsTo(User::class, 'staff_id');
+    }
+
+    /**
+     * Get the URL for the ID document.
+     */
+    public function getIdDocumentUrlAttribute()
+    {
+        return $this->id_document_path ? Storage::url($this->id_document_path) : null;
+    }
+
+    /**
+     * Get user's full address.
+     */
+    public function getFullAddressAttribute()
+    {
+        $parts = array_filter([
+            $this->address_street,
+            $this->address_city,
+            $this->address_state,
+            $this->address_country,
+        ]);
+
+        return implode(', ', $parts);
     }
 }

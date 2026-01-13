@@ -1,6 +1,4 @@
 <?php
-// FILE: routes/web.php
-// This is the complete, definitive, and fully functional version of the web routes file.
 
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -21,7 +19,6 @@ use App\Http\Controllers\Staff\StaffDashboardController;
 use App\Http\Controllers\Staff\LandlordController as StaffLandlordController;
 use App\Http\Controllers\DeletionRequestController;
 
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -37,9 +34,11 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
-Route::get('/contact', function () {
-    return Inertia::render('Contact');
-})->name('contact');
+
+// --- Public Contact Routes ---
+Route::get('/contact', [ContactController::class, 'index'])->name('contact');
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.submit');
+
 // --- Main Authenticated User Routes (for Tenants and Landlords) ---
 Route::middleware(['auth', 'verified'])->group(function () {
     
@@ -92,22 +91,29 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 // --- ADMIN-ONLY ROUTES ---
-// This group is protected by the 'admin' middleware.
 Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
-    Route::resource('users', AdminUserController::class)->only(['index']);
-     Route::resource('users', AdminUserController::class)->only(['index']);
-    Route::get('/support-tickets', function() { return Inertia::render('Placeholder', ['pageName' => 'Support Tickets']); })->name('tickets.index');
-    Route::resource('users', AdminUserController::class)->only(['index', 'show']);
+    Route::resource('users', AdminUserController::class)->only(['index', 'show', 'edit', 'update', 'destroy']);
+    Route::get('/contacts', [ContactController::class, 'getAllMessages'])->name('contacts.index');
+    Route::patch('/contacts/{contact}/status', [ContactController::class, 'updateStatus'])->name('contacts.update-status');
+    Route::get('/support-tickets', function() { 
+        return Inertia::render('Admin/SupportTickets'); 
+    })->name('tickets.index');
 });
 
 // --- STAFF-ONLY ROUTES ---
-// This group is protected by the 'staff' middleware.
 Route::middleware(['auth', 'verified', 'staff'])->prefix('staff')->name('staff.')->group(function () {
     Route::get('/dashboard', [StaffDashboardController::class, 'index'])->name('dashboard');
-    Route::resource('landlords', StaffLandlordController::class)->only(['index', 'create', 'store']);
-    Route::resource('landlords', StaffLandlordController::class)->only(['index', 'create', 'store', 'show']);
+    Route::resource('landlords', StaffLandlordController::class)->only(['index', 'create', 'store', 'show', 'edit', 'update']);
+    Route::get('/contact-submissions', function() {
+        $contacts = \App\Models\Contact::where('type', 'landlord_registration')
+                    ->orderBy('created_at', 'desc')
+                    ->paginate(10);
+        
+        return Inertia::render('Staff/ContactSubmissions', [
+            'contacts' => $contacts
+        ]);
+    })->name('contacts.index');
 });
 
-// This file is included by Laravel Breeze for handling login, register, etc.
 require __DIR__.'/auth.php';
